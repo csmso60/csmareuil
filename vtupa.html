@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VTUPA - Suivi Kilométrage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Formulaire VTUPA</h1>
+
+  <form id="vtupa-form">
+    <label for="nom">Prénom et Nom</label>
+    <input type="text" id="nom" name="nom" required>
+
+    <label for="motif">Motif de Sortie</label>
+    <textarea id="motif" name="motif" rows="2" required></textarea>
+
+    <label for="km">Kilométrage Actuel</label>
+    <input type="number" id="km" name="km" required>
+
+    <button type="submit">Valider</button>
+  </form>
+
+  <a href="kilometrage.html" class="back-button">⬅ Retour</a>
+
+  <script>
+    document.getElementById("vtupa-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nom = document.getElementById("nom").value;
+      const motif = document.getElementById("motif").value;
+      const km = document.getElementById("km").value;
+
+      const formData = new FormData();
+      formData.append("nom", nom);
+      formData.append("motif", motif);
+      formData.append("km", km);
+
+      fetch("https://script.google.com/macros/s/AKfycbz1esR2hIE4Ajq9FpsQKoxRM6gg4ogBU4x6t27y9xE4uIduE_VCcsT2Bh2yiZ5VQKWF/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(text => {
+        try {
+          const result = JSON.parse(text);
+          if (result.distance !== undefined) {
+            alert(`Merci, ${nom}, vous avez parcouru ${result.distance} km.`);
+          } else {
+            alert(`Merci, ${nom}, vos données ont été enregistrées.`);
+          }
+        } catch {
+          alert(`Merci, ${nom}, vos données ont été envoyées.`);
+        }
+        document.getElementById("vtupa-form").reset();
+      })
+      .catch(() => {
+        alert("Erreur lors de l'envoi. Veuillez réessayer.");
+      });
+    });
+  </script>
+</body>
+</html>

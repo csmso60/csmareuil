@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi Kilométrage - CS Mareuil-sur-Ourcq</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Suivi du kilométrage</h1>
+  </header>
+
+  <main>
+    <div class="accordion">
+      <button class="accordion-toggle" onclick="toggleAccordion('kilometrage-engins')">
+        Choisir un engin ⬇
+      </button>
+      <div id="kilometrage-engins" class="accordion-content">
+        <div class="engin">
+          <a href="vsav.html">VSAV</a>
+          <div id="vsav-info" class="engin-info">Chargement...</div>
+        </div>
+        <div class="engin">
+          <a href="vtupa.html">VTUPA</a>
+          <div id="vtupa-info" class="engin-info">Chargement...</div>
+        </div>
+        <div class="engin">
+          <a href="ccir.html">CCIR</a>
+          <div id="ccir-info" class="engin-info">Chargement...</div>
+        </div>
+        <div class="engin">
+          <a href="ctul.html">CTUL</a>
+          <div id="ctul-info" class="engin-info">Chargement...</div>
+        </div>
+        <div class="engin">
+          <a href="vlr.html">VLR</a>
+          <div id="vlr-info" class="engin-info">Chargement...</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-button">⬅ Retour à l'accueil</a>
+  </main>
+
+  <script>
+    function toggleAccordion(id) {
+      const section = document.getElementById(id);
+      section.style.display = section.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function chargerInfosEngin(id, urlScript) {
+      fetch(urlScript)
+        .then(res => res.json())
+        .then(data => {
+          const div = document.getElementById(id);
+          div.innerHTML = data.map(d => `<div>${d.message}</div>`).join('');
+        })
+        .catch(() => {
+          document.getElementById(id).textContent = "Impossible de charger les données.";
+        });
+    }
+
+    // 🔁 Remplace chaque URL par le lien de ton Web App pour chaque engin :
+    chargerInfosEngin("vsav-info", "https://script.google.com/macros/s/AKfycbyk3WgxEPWRyl9IctuIXdxKljLCG_LBFXdR7c3B2Tk9s-5FVr5kuQcqNjd9vHMOTmAg/exec");
+    chargerInfosEngin("vtupa-info", "https://script.google.com/macros/s/AKfycbz2TuNckXsYUU9ko227XnwbaxeSSl_Y9R849dLFIN_bWKyTp5IDegijTY_qAV_iaSKa/exec");
+    chargerInfosEngin("ccir-info", "https://script.google.com/macros/s/AKfycbwUlgXvgVLgomcs_TE_5RVo1QabNp3KC17HnTA8SEQJebLp2RUTryPneO-iCl8CdcP6/exec");
+    chargerInfosEngin("ctul-info", "https://script.google.com/macros/s/AKfycbzDoHl6f5STiqKsqh-6Ar28F1ZECloBs8OUkG0XYXlf5EiS0eBsPCM45WmjPcDuVkJJoA/exec");
+    chargerInfosEngin("vlr-info",  "https://script.google.com/macros/s/AKfycbz-SkUobtWsQ9c-8_6iU9V_a8sjJS5VL7bcBc8PHl1qnqbIraAfqv2_FuSQwsmSxKUT-Q/exec");
+  </script>
+</body>
+</html>

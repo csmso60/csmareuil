@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Courante - CS Mareuil</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Main Courante</h1>
+  </header>
+
+  <main>
+    <form id="maincourante-form" enctype="multipart/form-data">
+      <label for="message">Consigne / Message</label>
+      <textarea id="message" name="message" rows="3" required></textarea>
+
+      <label for="dateDebut">Date de début</label>
+      <input type="date" id="dateDebut" name="dateDebut" required>
+
+      <label for="dateFin">Date de fin</label>
+      <input type="date" id="dateFin" name="dateFin" required>
+
+      <label for="fichier">Ajouter un fichier (facultatif)</label>
+      <input type="file" id="fichier" name="fichier">
+
+      <button type="submit">Ajouter la consigne</button>
+    </form>
+
+    <section id="liste-consignes">
+      <h2>Consignes en cours</h2>
+      <div id="consignes"></div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("maincourante-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch("URL_DE_TON_SCRIPT_GOOGLE", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(text => {
+        alert("Consigne ajoutée avec succès.");
+        form.reset();
+      })
+      .catch(() => {
+        alert("Erreur lors de l'envoi de la consigne.");
+      });
+    });
+  </script>
+</body>
+</html>
