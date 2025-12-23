@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Déclaration d'anomalie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Déclaration d’anomalie</h1>
+
+  <form id="anomalie-form" enctype="multipart/form-data">
+    <label for="nom">Nom / Prénom</label>
+    <input type="text" id="nom" name="nom" required>
+
+    <label for="anomalie">Description de l’anomalie</label>
+    <textarea id="anomalie" name="anomalie" rows="3" required></textarea>
+
+    <label for="photo">Photo de l’anomalie (facultatif)</label>
+    <input type="file" id="photo" name="photo" accept="image/*">
+
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <a href="index.html" class="back-button">⬅ Retour</a>
+
+  <script>
+    document.getElementById("anomalie-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+
+      fetch("URL_DE_TON_SCRIPT_GOOGLE", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(() => {
+        alert("Merci, votre anomalie a bien été transmise.");
+        this.reset();
+      })
+      .catch(() => {
+        alert("Erreur lors de l’envoi. Veuillez réessayer.");
+      });
+    });
+  </script>
+
+</body>
+</html>
