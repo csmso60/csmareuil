@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Déclaration d’anomalie</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Déclaration d’anomalie</h1>
+
+<form id="anomalie-form">
+  <label>Nom / Prénom</label>
+  <input type="text" id="nom" required>
+
+  <label>Description de l’anomalie</label>
+  <textarea id="anomalie" required></textarea>
+
+  <label>Photo (facultatif)</label>
+  <input type="file" id="photo" accept="image/*">
+
+  <button type="submit">Envoyer</button>
+</form>
+
+<script>
+document.getElementById("anomalie-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  alert("JS OK – le formulaire est bien intercepté");
+});
+</script>
+
+</body>
+</html>
