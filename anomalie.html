@@ -26,8 +26,45 @@
 <script>
 document.getElementById("anomalie-form").addEventListener("submit", function(e) {
   e.preventDefault();
-  alert("JS OK – le formulaire est bien intercepté");
+
+  const nom = document.getElementById("nom").value;
+  const anomalie = document.getElementById("anomalie").value;
+  const photoInput = document.getElementById("photo");
+
+  const formData = new FormData();
+  formData.append("nom", nom);
+  formData.append("anomalie", anomalie);
+
+  if (photoInput.files.length > 0) {
+    const file = photoInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function() {
+      formData.append("photoBase64", reader.result);
+      formData.append("photoName", file.name);
+      envoyer(formData);
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    envoyer(formData);
+  }
 });
+
+function envoyer(formData) {
+  fetch("URL_DE_TON_SCRIPT_GOOGLE", {
+    method: "POST",
+    body: formData
+  })
+  .then(() => {
+    alert("Merci, votre anomalie a bien été transmise.");
+    document.getElementById("anomalie-form").reset();
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Erreur lors de l’envoi de l’anomalie.");
+  });
+}
 </script>
 
 </body>
