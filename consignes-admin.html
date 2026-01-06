@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programmer une consigne</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>⚙️ Programmer une consigne</h1>
+
+<form id="consigne-form">
+  <label>Type de consigne</label>
+  <select id="type">
+    <option value="date">Date précise</option>
+    <option value="hebdo">Hebdomadaire</option>
+  </select>
+
+  <label>Date (si date précise)</label>
+  <input type="date" id="date">
+
+  <label>Jour (si hebdomadaire)</label>
+  <select id="jour">
+    <option value="">--</option>
+    <option>lundi</option>
+    <option>mardi</option>
+    <option>mercredi</option>
+    <option>jeudi</option>
+    <option>vendredi</option>
+    <option>samedi</option>
+    <option>dimanche</option>
+  </select>
+
+  <label>Consigne</label>
+  <textarea id="texte" required></textarea>
+
+  <button type="submit">Enregistrer</button>
+</form>
+
+<a href="index.html" class="back-button">⬅ Retour</a>
+
+<script>
+  const CODE = "1234";
+
+  document.getElementById("consigne-form").addEventListener("submit", e => {
+    e.preventDefault();
+
+    const code = prompt("Code responsable :");
+    if (code !== CODE) {
+      alert("❌ Code incorrect");
+      return;
+    }
+
+    const type = typeEl.value;
+    const texte = texteEl.value.trim();
+    if (!texte) return;
+
+    let consignes = JSON.parse(localStorage.getItem("consignes")) || [];
+
+    if (type === "date") {
+      if (!dateEl.value) return alert("Date manquante");
+      consignes.push({ type, date: dateEl.value, texte });
+    } else {
+      if (!jourEl.value) return alert("Jour manquant");
+      consignes.push({ type, jour: jourEl.value, texte });
+    }
+
+    localStorage.setItem("consignes", JSON.stringify(consignes));
+    alert("✅ Consigne programmée");
+    e.target.reset();
+  });
+
+  const typeEl = document.getElementById("type");
+  const dateEl = document.getElementById("date");
+  const jourEl = document.getElementById("jour");
+  const texteEl = document.getElementById("texte");
+</script>
+
+</body>
+</html>
