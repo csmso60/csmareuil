@@ -12,31 +12,30 @@
   <style>
     /* ===== Compteur ===== */
     .counter-box {
-      background: #ffeb3b;
-      padding: 1.5rem;
-      border-radius: 16px;
-      text-align: center;
-      max-width: 350px;
-      margin: 2rem auto;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
+  background: #ffeb3b;
+  padding: 1rem;
+  border-radius: 14px;
+  text-align: center;
+  max-width: 260px;   /* ⬅ plus étroit */
+  margin: 1.5rem auto;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
 
-    .counter-number {
-      font-size: 3rem;
-      font-weight: bold;
-      margin: 1rem 0;
-    }
+.counter-box h2 {
+  font-size: 0.95rem; /* ⬅ titre plus discret */
+  margin-bottom: 0.5rem;
+}
 
-    .counter-box button {
-      background: #d32f2f;
-      color: white;
-      border: none;
-      padding: 1rem;
-      font-size: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      width: 100%;
-    }
+.counter-number {
+  font-size: 2.2rem; /* ⬅ chiffre plus petit */
+  margin: 0.5rem 0;
+}
+
+.counter-box button {
+  padding: 0.7rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
 
     /* ===== Consignes ===== */
     .consigne-box {
@@ -92,15 +91,8 @@
 </nav>
 
 <main>
-
-  <!-- ===== Compteur ===== -->
-  <div class="counter-box">
-    <h2>🚨 Interventions depuis le début de l’année</h2>
-    <div id="counter" class="counter-number">79</div>
-    <button onclick="incrementCounter()">+1 intervention</button>
-  </div>
-
-  <!-- ===== Consignes du jour ===== -->
+  
+ <!-- ===== Consignes du jour ===== -->
   <section class="consigne-box">
     <h2>📌 Consignes du jour</h2>
     <ul id="consignes-du-jour">
@@ -111,6 +103,14 @@
       ⚙️ Programmer une consigne
     </a>
   </section>
+  
+  <!-- ===== Compteur ===== -->
+  <div class="counter-box">
+    <h2>🚨 Interventions depuis le début de l’année</h2>
+    <div id="counter" class="counter-number">79</div>
+    <button onclick="incrementCounter()">+1 intervention</button>
+  </div>
+
 
 </main>
 
