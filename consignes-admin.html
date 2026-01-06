@@ -3,12 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Programmer une consigne</title>
+  <title>Gestion des consignes</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    .consigne-item {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      margin: 0.75rem 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .consigne-actions button {
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
 <body>
 
-<h1>⚙️ Programmer une consigne</h1>
+<h1>⚙️ Gestion des consignes</h1>
 
 <form id="consigne-form">
   <label>Type de consigne</label>
@@ -38,12 +53,27 @@
   <button type="submit">Enregistrer</button>
 </form>
 
+<h2>📋 Consignes programmées</h2>
+<div id="liste-consignes"></div>
+
 <a href="index.html" class="back-button">⬅ Retour</a>
 
 <script>
   const CODE = "1234";
 
-  document.getElementById("consigne-form").addEventListener("submit", e => {
+  const form = document.getElementById("consigne-form");
+  const typeEl = document.getElementById("type");
+  const dateEl = document.getElementById("date");
+  const jourEl = document.getElementById("jour");
+  const texteEl = document.getElementById("texte");
+  const listeEl = document.getElementById("liste-consignes");
+
+  let consignes = JSON.parse(localStorage.getItem("consignes")) || [];
+  let editingId = null;
+
+  afficherConsignes();
+
+  form.addEventListener("submit", e => {
     e.preventDefault();
 
     const code = prompt("Code responsable :");
@@ -52,29 +82,87 @@
       return;
     }
 
-    const type = typeEl.value;
     const texte = texteEl.value.trim();
     if (!texte) return;
 
-    let consignes = JSON.parse(localStorage.getItem("consignes")) || [];
-
-    if (type === "date") {
-      if (!dateEl.value) return alert("Date manquante");
-      consignes.push({ type, date: dateEl.value, texte });
+    if (editingId) {
+      const c = consignes.find(c => c.id === editingId);
+      c.type = typeEl.value;
+      c.date = dateEl.value;
+      c.jour = jourEl.value;
+      c.texte = texte;
+      editingId = null;
     } else {
-      if (!jourEl.value) return alert("Jour manquant");
-      consignes.push({ type, jour: jourEl.value, texte });
+      consignes.push({
+        id: Date.now(),
+        type: typeEl.value,
+        date: dateEl.value,
+        jour: jourEl.value,
+        texte: texte
+      });
     }
 
     localStorage.setItem("consignes", JSON.stringify(consignes));
-    alert("✅ Consigne programmée");
-    e.target.reset();
+    form.reset();
+    afficherConsignes();
   });
 
-  const typeEl = document.getElementById("type");
-  const dateEl = document.getElementById("date");
-  const jourEl = document.getElementById("jour");
-  const texteEl = document.getElementById("texte");
+  function afficherConsignes() {
+    listeEl.innerHTML = "";
+
+    if (consignes.length === 0) {
+      listeEl.innerHTML = "<p>Aucune consigne programmée.</p>";
+      return;
+    }
+
+    consignes.forEach(c => {
+      const div = document.createElement("div");
+      div.className = "consigne-item";
+
+      let info = "";
+      if (c.type === "date") {
+        info = `📅 ${c.date}`;
+      } else {
+        info = `🔁 Tous les ${c.jour}`;
+      }
+
+      div.innerHTML = `
+        <strong>${c.texte}</strong><br>
+        <small>${info}</small>
+        <div class="consigne-actions">
+          <button onclick="editConsigne(${c.id})">✏️ Modifier</button>
+          <button onclick="deleteConsigne(${c.id})">🗑 Supprimer</button>
+        </div>
+      `;
+
+      listeEl.appendChild(div);
+    });
+  }
+
+  function editConsigne(id) {
+    const c = consignes.find(c => c.id === id);
+    if (!c) return;
+
+    typeEl.value = c.type;
+    dateEl.value = c.date || "";
+    jourEl.value = c.jour || "";
+    texteEl.value = c.texte;
+    editingId = id;
+  }
+
+  function deleteConsigne(id) {
+    const code = prompt("Code responsable :");
+    if (code !== CODE) {
+      alert("❌ Code incorrect");
+      return;
+    }
+
+    if (!confirm("Supprimer cette consigne ?")) return;
+
+    consignes = consignes.filter(c => c.id !== id);
+    localStorage.setItem("consignes", JSON.stringify(consignes));
+    afficherConsignes();
+  }
 </script>
 
 </body>
