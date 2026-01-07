@@ -19,63 +19,12 @@
 </header>
 
 <nav>
-  <section class="consignes">
-  <h2>Consigne du jour</h2>
-  <ul id="consignes"></ul>
-</section>
-
-<section class="compteur">
-  <h2>Interventions 2026</h2>
-  <div id="total">0</div>
-  <button onclick="increment()">+1</button>
-</section>
 
   <a href="inventaire.html">Inventaire</a>
   <a href="kilometrage.html">Suivi du kilométrage</a>
   <a href="anomalie.html">Déclaration d'anomalie</a>
 </nav>
-  
-<script>
-const API = "1_sf6p3IY9DxVvtI0G4pSvl9FO_dTWhmkOTf-ZNn2kOQ";
 
-fetch(API + "?action=getData")
-  .then(r => r.json())
-  .then(data => {
-    document.getElementById("total").textContent = data.total;
-
-    const ul = document.getElementById("consignes");
-    ul.innerHTML = "";
-
-    const today = new Date();
-    const day = today.toLocaleDateString("fr-FR");
-    const weekday = today.toLocaleDateString("fr-FR", { weekday: "long" });
-
-    data.consignes.forEach(c => {
-      if (
-        (c[1] === "date" && c[2] === today.toISOString().slice(0,10)) ||
-        (c[1] === "hebdo" && c[3] === weekday)
-      ) {
-        const li = document.createElement("li");
-        li.textContent = c[4];
-        ul.appendChild(li);
-      }
-    });
-  });
-
-function increment() {
-  const code = prompt("Code responsable :");
-  if (!code) return;
-
-  fetch(API, {
-    method: "POST",
-    body: new URLSearchParams({
-      action: "increment",
-      code
-    })
-  })
-  .then(() => location.reload());
-}
-</script>
 
 </body>
 </html>
